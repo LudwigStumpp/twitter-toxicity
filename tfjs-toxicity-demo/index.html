@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TFJS Toxicity Demo</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/toxicity"></script>
+    <script src="index.js"></script>
+</head>
+
+<body>
+    <h1>TFJS Toxicity Demo</h1>
+    <form>
+        <label for="textInput">Input:</label><br>
+        <textarea id="textInput" name="textInput" value=""></textarea><br>
+        <input id="submit" type="submit" value="Check Toxicity">
+    </form>
+    <div>
+        <p>Toxicity probability: <span id="response"></span></p>
+    </div>
+</body>
+
+</html>
