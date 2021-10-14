@@ -1,3 +1,6 @@
+require('@tensorflow/tfjs');
+const toxicity = require('@tensorflow-models/toxicity');
+
 toxicity.load().then(model => {
     chrome.runtime.onMessage.addListener(
         function (request, sender, sendResponse) {
