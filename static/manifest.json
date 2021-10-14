@@ -2,11 +2,11 @@
     "name": "Twitter Toxicity Detector",
     "description": "A Toxicity Detector on Twitter",
     "version": "1.0",
-    "manifest_version": 2,
+    "manifest_version": 3,
     "content_scripts": [
         {
             "js": [
-                "happify.js"
+                "content.js"
             ],
             "matches": [
                 "https://twitter.com/*"
@@ -14,11 +14,6 @@
         }
     ],
     "background": {
-        "scripts": [
-            "tfjs.js",
-            "tfjs-toxicity.js",
-            "background.js"
-        ]
-    },
-    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+        "service_worker": "background.js"
+    }
 }
