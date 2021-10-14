@@ -1,39 +1,62 @@
+const THRESHOLD = 0.5;
+
 function addScore(textElement, score) {
     const span = document.createElement("span");
-    span.innerHTML = `Toxicity Score: ${score}<br>`;
+
+    if (score >= THRESHOLD) {
+        span.style.color = 'red';
+    }
+
+    span.innerHTML = `Toxicity Score: ${score.toFixed(2)}<br>`;
     textElement.prepend(span);
 }
 
 function happify(timeline) {
-    console.log('change detected');
-
     const tweets = timeline.children[0].querySelectorAll(":scope > div:not([happified])");
+
+    // TODO add to queue and process queue as different calls
+    if (tweets.length <= 3) {
+        return;
+    }
+
+    // TODO only textElements and textContents by map on line 34
+    let textContents = [];
+    let textElements = [];
 
     for (let i = 0; i < tweets.length; i++) {
         const tweet = tweets[i];
-
         const textElement = tweet.querySelector('[lang=en]')
         if (textElement != null) {
-            const textContent = textElement.textContent;
-            chrome.runtime.sendMessage({ input: textContent }, function (response) {
-                console.log(textContent, response.toxicityProb);
-                addScore(textElement, response.toxicityProb);
-            });
+            textElements.push(textElement);
+            textContents.push(textElement.textContent)
         }
-
         tweet.setAttribute('happified', '');
     }
+
+    chrome.runtime.sendMessage({ input: textContents }, function (response) {
+        for (let i = 0; i < textElements.length; i++) {
+            addScore(textElements[i], response.toxicityProbs[i]);
+        };
+    });
 }
 
-setTimeout(function () {
-    const timeline = document.querySelector('[aria-label="Timeline: Your Home Timeline"]');
-
-    const observerOptions = {
-        childList: true,
-        attributes: false,
-        subtree: true
+setInterval(function () {
+    const timeline = document.querySelector('[aria-label*="Timeline"]');
+    if (timeline) {
+        happify(timeline);
     }
-    const observer = new MutationObserver(() => happify(timeline));
 
-    observer.observe(timeline, observerOptions);
-}, 5000);
+}, 100);
+
+// setInterval(function () {
+//     const timeline = document.querySelector('[aria-label*="Timeline:"]');
+
+//     const observerOptions = {
+//         childList: true,
+//         attributes: false,
+//         subtree: true
+//     }
+//     const observer = new MutationObserver(() => happify(timeline));
+
+//     observer.observe(timeline, observerOptions);
+// }, 1000);
