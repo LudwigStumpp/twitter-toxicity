@@ -4,20 +4,21 @@
   margin-bottom: 10px;
   display: inline-block;
   margin-top: 5px;
+  border-width: 1px;
+  border-style: solid;
 
   &--wait {
     @extend .toxicity-score;
-    border: 1px  orange solid;
-    color: inherit;
+    border-color: orange;
   }
 
   &--ok {
     @extend .toxicity-score;
-    background-color: green;
+    border-color: green;
   }
   
   &--nok {
     @extend .toxicity-score;
-    background-color: red;
+    border-color: red;
   } 
 }
