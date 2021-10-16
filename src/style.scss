@@ -1,0 +1,23 @@
+.toxicity-score {
+  padding: 4px 8px 4px 8px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  display: inline-block;
+  margin-top: 5px;
+
+  &--wait {
+    @extend .toxicity-score;
+    border: 1px  orange solid;
+    color: inherit;
+  }
+
+  &--ok {
+    @extend .toxicity-score;
+    background-color: green;
+  }
+  
+  &--nok {
+    @extend .toxicity-score;
+    background-color: red;
+  } 
+}
