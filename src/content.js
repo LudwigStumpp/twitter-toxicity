@@ -32,9 +32,9 @@ function happify(timeline) {
 
   chrome.runtime.sendMessage({ input: textElements.map((e) => e.textContent) }, (response) => {
     try {
-    for (let i = 0; i < textElements.length; i += 1) {
+      for (let i = 0; i < textElements.length; i += 1) {
         if (response) {
-      addScore(textElements[i], response.toxicityProbs[i]);
+          addScore(textElements[i], response.toxicityProbs[i]);
         } else {
           tweets[i].removeAttribute('happified');
         }
@@ -54,16 +54,3 @@ setInterval(() => {
     happify(timeline);
   }
 }, 100);
-
-// setInterval(function () {
-//     const timeline = document.querySelector('[aria-label*="Timeline:"]');
-
-//     const observerOptions = {
-//         childList: true,
-//         attributes: false,
-//         subtree: true
-//     }
-//     const observer = new MutationObserver(() => happify(timeline));
-
-//     observer.observe(timeline, observerOptions);
-// }, 1000);
