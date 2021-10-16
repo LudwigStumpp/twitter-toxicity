@@ -1,22 +1,23 @@
-require('@tensorflow/tfjs');
-const toxicity = require('@tensorflow-models/toxicity');
+import '@tensorflow/tfjs';
+import { load } from '@tensorflow-models/toxicity';
 
-toxicity.load().then(model => {
-    chrome.runtime.onMessage.addListener(
-        function (request, sender, sendResponse) {
-            if (request.input) {
-                model.classify(request.input).then(predictions => {
-                    const toxicityResults = predictions[6]['results'];
+load().then((model) => {
+  chrome.runtime.onMessage.addListener(
+    (request, sender, sendResponse) => {
+      if (request.input) {
+        model.classify(request.input).then((predictions) => {
+          const toxicityResults = predictions[6].results;
 
-                    let toxicityProbs = [];
-                    for (let i = 0; i < toxicityResults.length; i++) {
-                        toxicityProbs.push(toxicityResults[i]['probabilities'][1])
-                    }
+          const toxicityProbs = [];
+          for (let i = 0; i < toxicityResults.length; i += 1) {
+            toxicityProbs.push(toxicityResults[i].probabilities[1]);
+          }
 
-                    sendResponse({ toxicityProbs: toxicityProbs });
-                });
-                return true;
-            }
-        }
-    );
+          sendResponse({ toxicityProbs });
+        });
+        return true;
+      }
+      return true;
+    },
+  );
 });

@@ -1,62 +1,56 @@
 const THRESHOLD = 0.5;
 
 function addScore(textElement, score) {
-    const span = document.createElement("span");
+  const span = document.createElement('span');
 
-    if (score >= THRESHOLD) {
-        span.style.color = 'red';
-    }
+  if (score >= THRESHOLD) {
+    span.style.color = 'red';
+  }
 
-    span.innerHTML = `Toxicity Score: ${score.toFixed(2)}<br>`;
-    textElement.prepend(span);
+  span.innerHTML = `Toxicity Score: ${score.toFixed(2)}<br>`;
+  textElement.prepend(span);
 }
 
 function happify(timeline) {
-    const tweets = timeline.children[0].querySelectorAll(":scope > div:not([happified])");
+  const tweets = timeline.children[0].querySelectorAll(':scope > div:not([happified])');
 
-    // TODO add to queue and process queue as different calls
-    if (tweets.length <= 3) {
-        return;
+  // TODO add to queue and process queue as different calls
+  if (tweets.length <= 3) {
+    return;
+  }
+
+  const textElements = [];
+
+  for (let i = 0; i < tweets.length; i += 1) {
+    const tweet = tweets[i];
+    const textElement = tweet.querySelector('[lang=en]');
+    if (textElement != null) {
+      textElements.push(textElement);
     }
+    tweet.setAttribute('happified', '');
+  }
 
-    // TODO only textElements and textContents by map on line 34
-    let textContents = [];
-    let textElements = [];
-
-    for (let i = 0; i < tweets.length; i++) {
-        const tweet = tweets[i];
-        const textElement = tweet.querySelector('[lang=en]')
-        if (textElement != null) {
-            textElements.push(textElement);
-            textContents.push(textElement.textContent)
+  chrome.runtime.sendMessage({ input: textElements.map((e) => e.textContent) }, (response) => {
+    try {
+      for (let i = 0; i < textElements.length; i += 1) {
+        if (response) {
+          addScore(textElements[i], response.toxicityProbs[i]);
+        } else {
+          tweets[i].removeAttribute('happified');
         }
-        tweet.setAttribute('happified', '');
+      }
+    } catch (e) {
+      for (let i = 0; i < tweets.length; i += 1) {
+        tweets[i].removeAttribute('happified');
+      }
+      console.error(e);
     }
-
-    chrome.runtime.sendMessage({ input: textContents }, function (response) {
-        for (let i = 0; i < textElements.length; i++) {
-            addScore(textElements[i], response.toxicityProbs[i]);
-        };
-    });
+  });
 }
 
-setInterval(function () {
-    const timeline = document.querySelector('[aria-label*="Timeline"]');
-    if (timeline) {
-        happify(timeline);
-    }
-
+setInterval(() => {
+  const timeline = document.querySelector('[aria-label*="Timeline"]');
+  if (timeline) {
+    happify(timeline);
+  }
 }, 100);
-
-// setInterval(function () {
-//     const timeline = document.querySelector('[aria-label*="Timeline:"]');
-
-//     const observerOptions = {
-//         childList: true,
-//         attributes: false,
-//         subtree: true
-//     }
-//     const observer = new MutationObserver(() => happify(timeline));
-
-//     observer.observe(timeline, observerOptions);
-// }, 1000);
