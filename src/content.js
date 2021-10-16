@@ -19,8 +19,6 @@ function happify(timeline) {
     return;
   }
 
-  // TODO only textElements and textContents by map on line 34
-  const textContents = [];
   const textElements = [];
 
   for (let i = 0; i < tweets.length; i += 1) {
@@ -28,12 +26,11 @@ function happify(timeline) {
     const textElement = tweet.querySelector('[lang=en]');
     if (textElement != null) {
       textElements.push(textElement);
-      textContents.push(textElement.textContent);
     }
     tweet.setAttribute('happified', '');
   }
 
-  chrome.runtime.sendMessage({ input: textContents }, (response) => {
+  chrome.runtime.sendMessage({ input: textElements.map((e) => e.textContent) }, (response) => {
     for (let i = 0; i < textElements.length; i += 1) {
       addScore(textElements[i], response.toxicityProbs[i]);
     }
