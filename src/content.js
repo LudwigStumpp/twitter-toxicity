@@ -1,6 +1,7 @@
 const THRESHOLD = 0.5;
+const CHECK_ATTR = 'toxicity-checked';
 
-function addScore(textElement, score) {
+function addScore(tweet, score) {
   const span = document.createElement('span');
 
   if (score >= THRESHOLD) {
@@ -8,35 +9,28 @@ function addScore(textElement, score) {
   }
 
   span.innerHTML = `Toxicity Score: ${score.toFixed(2)}<br>`;
-  textElement.prepend(span);
+  tweet.prepend(span);
 }
 
 function happify(timeline) {
-  const tweets = timeline.children[0].querySelectorAll(':scope > div:not([happified])');
+  const tweets = timeline.children[0].querySelectorAll(`[lang=en]:not([${CHECK_ATTR}])`);
 
   // TODO add to queue and process queue as different calls
   if (tweets.length <= 3) {
     return;
   }
 
-  const textElements = [];
-
   for (let i = 0; i < tweets.length; i += 1) {
-    const tweet = tweets[i];
-    const textElement = tweet.querySelector('[lang=en]');
-    if (textElement != null) {
-      textElements.push(textElement);
-    }
-    tweet.setAttribute('happified', '');
+    tweets[i].setAttribute(`${CHECK_ATTR}`, '');
   }
 
-  chrome.runtime.sendMessage({ input: textElements.map((e) => e.textContent) }, (response) => {
+  chrome.runtime.sendMessage({ input: [...tweets].map((e) => e.textContent) }, (response) => {
     try {
-      for (let i = 0; i < textElements.length; i += 1) {
+      for (let i = 0; i < tweets.length; i += 1) {
         if (response) {
-          addScore(textElements[i], response.toxicityProbs[i]);
+          addScore(tweets[i], response.toxicityProbs[i]);
         } else {
-          tweets[i].removeAttribute('happified');
+          tweets[i].removeAttribute(`${CHECK_ATTR}`);
         }
       }
     } catch (e) {
