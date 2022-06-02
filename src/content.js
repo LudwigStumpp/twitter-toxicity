@@ -44,12 +44,15 @@ function happify(timeline) {
     return;
   }
 
+  // read text before adding wait label to avoid reading the content of the wait label as well
+  const texts = [...tweets].map((e) => e.textContent);
+
   for (let i = 0; i < tweets.length; i += 1) {
     tweets[i].setAttribute(`${CHECK_ATTR}`, '');
     addWait(tweets[i]);
   }
 
-  chrome.runtime.sendMessage({ input: [...tweets].map((e) => e.textContent) }, (response) => {
+  chrome.runtime.sendMessage({ input: texts }, (response) => {
     try {
       for (let i = 0; i < tweets.length; i += 1) {
         if (response) {
