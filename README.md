@@ -2,7 +2,7 @@
 A Browser Plugin to evaluate the toxicity level of Twitter Tweets.
 
 ## 1. Demo
-![Twitter Toxicity Plugin](https://drive.google.com/uc?export=view&id=1UpbKwb6S71rCDooWkenf9Uddn31m7cUo)
+![current_status](https://user-images.githubusercontent.com/42147848/170800205-4dd37317-83fd-4b86-926c-df059ad62fc8.gif)
 
 ## 2. Browser Support
 Currently only supports Chrome browser. If I find some time, I will make it work on Firefox as well.
