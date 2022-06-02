@@ -1,5 +1,5 @@
 # twitter-toxicity
-A Browser Plugin to evaluate the toxicity level of Twitter Tweets.
+A Browser Plugin to evaluate the toxicity level of Twitter Tweets. Based on the [Tensorflow.js Toxicity Classifier](https://github.com/tensorflow/tfjs-models/blob/master/toxicity/README.md).
 
 ## 1. Demo
 ![current_status](https://user-images.githubusercontent.com/42147848/170800205-4dd37317-83fd-4b86-926c-df059ad62fc8.gif)
@@ -16,3 +16,5 @@ Currently the plugin has not yet been published to the Chrome extension store. T
 4. Build the extension: `npm run build`. The extension can now be found in the `dist` folder.
 5. Open your local extensions page of your Chrome browser. In the top left corner click on `Load unpacked` and select the `dist` directory.
 6. Visit `https://twitter.com`.
+
+In order to test the behaviour of the toxicity predictor, a click on the plugin icon opens a form where one can check the toxicity of any arbitrary text.
