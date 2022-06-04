@@ -12,18 +12,19 @@ window.addEventListener('load', () => {
     SUBMIT_BUTTON.disabled = true;
 
     chrome.runtime.sendMessage({ input: [text] }, (response) => {
-      if (response) {
+      if (!chrome.runtime.lastError && response) {
         try {
           const TOXICITY_PROB = response.toxicityProbs[0];
-          RESPONSE.innerHTML = TOXICITY_PROB.toFixed(2);
+          RESPONSE.placeholder = `${TOXICITY_PROB.toFixed(2) * 100} %`;
         } catch (e) {
           console.error(e);
-        } finally {
-          // enable
-          TEXT_INPUT.disabled = false;
-          SUBMIT_BUTTON.disabled = false;
         }
+      } else {
+        RESPONSE.placeholder = 'Error. Please try again.';
       }
+      // enable
+      TEXT_INPUT.disabled = false;
+      SUBMIT_BUTTON.disabled = false;
     });
   });
 });
