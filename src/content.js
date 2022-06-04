@@ -20,7 +20,7 @@ function addScore(tweet, score) {
   const span = div.querySelector('span');
 
   span.className = score >= THRESHOLD ? 'toxicity-score--nok' : 'toxicity-score--ok';
-  span.innerHTML = `Toxicity Score: ${score.toFixed(2)}<br>`;
+  span.innerHTML = `Toxicity Level: ${Math.round(score * 100)} %`;
 
   tweet.prepend(div);
 }
@@ -33,7 +33,7 @@ function addWait(tweet) {
   const span = div.querySelector('span');
 
   span.className = 'toxicity-score--wait';
-  span.innerHTML = 'Waiting for Toxicity Score';
+  span.innerHTML = 'Checking Toxicity Level ...';
 }
 
 function happify(timeline) {

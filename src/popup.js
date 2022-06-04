@@ -15,7 +15,7 @@ window.addEventListener('load', () => {
       if (!chrome.runtime.lastError && response) {
         try {
           const TOXICITY_PROB = response.toxicityProbs[0];
-          RESPONSE.placeholder = `${TOXICITY_PROB.toFixed(2) * 100} %`;
+          RESPONSE.placeholder = `${Math.round(TOXICITY_PROB * 100)} %`;
         } catch (e) {
           console.error(e);
         }
