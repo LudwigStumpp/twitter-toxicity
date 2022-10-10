@@ -8,7 +8,7 @@ A Browser Plugin to evaluate the toxicity level of Twitter Tweets. Based on the 
 Currently only supports Chrome browser. If I find some time, I will make it work on Firefox as well.
 
 ## 3. How to use
-Currently the plugin has not yet been published to the Chrome extension store. Therefore, you need to build it on your own. These are the required steps:
+Currently the plugin has not yet been published to the Chrome extension store. Therefore, you need to add it to your Chrome browser on your own. These are the required steps:
 
 1. Download the `dist.zip` folder in the latest release and unpack.
 2. Open your local extensions page of your Chrome browser. In the top left corner click on `Load unpacked` and select the `dist` directory.
